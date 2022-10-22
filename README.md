@@ -2,4 +2,4 @@
 
 Please fork this repository and paste the github link of your fork on Microsoft CMT. Detailed instructions are on Coursera under Week 1: Course Project Overview/Week 9 Activities.
 
-**A safe way to create a privatized dataset that does not leak personal/senitive information**
+**Data Set Creation: A safe way to create a privatized dataset that does not leak personal/senitive information**
