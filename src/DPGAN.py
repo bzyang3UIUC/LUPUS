@@ -78,7 +78,7 @@ def train(vals):
     RMSProp_optimizer = tf.keras.optimizers.experimental.RMSprop(learning_rate=0.01)
     Generator_RMSProp_optimizer = tf.keras.optimizers.experimental.RMSprop(learning_rate=0.01)
 
-    epochs = 500
+    epochs = 1000
     t2 = 4
     t1 = 1
     for epoch in range(epochs):
@@ -95,12 +95,12 @@ def train(vals):
 
                 loss, grads = discriminator_grad(discriminator, generator, sample_vals, sample_random)
                 # Add noise to grads here
-                grads = [x + tf.random.normal(x.shape, mean=0.0, stddev=1) for x in grads]
+                # grads = [x + tf.random.normal(x.shape, mean=0.0, stddev=1) for x in grads]
                 RMSProp_optimizer.apply_gradients(zip(grads, discriminator.trainable_variables))
 
                 # Clip gradient here
-                for w in discriminator.trainable_variables:
-                      w.assign(tf.clip_by_value(w, -10, 10))
+                # for w in discriminator.trainable_variables:
+                #       w.assign(tf.clip_by_value(w, -10, 10))
 
 
                 epoch_loss_avg.update_state(loss)
