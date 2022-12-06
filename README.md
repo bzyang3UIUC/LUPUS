@@ -48,3 +48,4 @@ df_synthetic.loc[(df_synthetic['sensitive_feature1'] > -150)&
 Which returns no data
 
 # Release dataset to the public!
+The final dataset can be found: data/synthetic_data.csv
