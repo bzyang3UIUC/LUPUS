@@ -94,7 +94,14 @@ def train(vals):
                 sample_random = tf.random.normal(sample_vals.shape)
 
                 loss, grads = discriminator_grad(discriminator, generator, sample_vals, sample_random)
+                # Add noise to grads here
+                grads = [x + tf.random.normal(x.shape, mean=0.0, stddev=1) for x in grads]
                 RMSProp_optimizer.apply_gradients(zip(grads, discriminator.trainable_variables))
+
+                # Clip gradient here
+                for w in discriminator.trainable_variables:
+                      w.assign(tf.clip_by_value(w, -10, 10))
+
 
                 epoch_loss_avg.update_state(loss)
         print(f'Discriminator loss: {epoch_loss_avg.result()}')
@@ -112,12 +119,14 @@ def train(vals):
 def validate_synthetic_data(generator, data):
     synthetic_data = generator(tf.random.normal(data.shape))
     df_synth = pd.DataFrame(synthetic_data)
+    df_synth.columns = [f'sensitive_feature{x+1}' for x in range(4)]
     df_synth['origin'] = 'synthetic'
     df_real = pd.DataFrame(data)
+    df_real.columns = [f'sensitive_feature{x+1}' for x in range(4)]
     df_real['origin'] = 'real'
     df_viz = df_real.append(df_synth)
-    for i in range(4):
-        sns.histplot(df_viz, x=i, hue='origin')
+    for x in range(4):
+        sns.histplot(df_viz, x=f'sensitive_feature{x+1}', hue='origin')
         plt.show()
 
 
